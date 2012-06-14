@@ -6,7 +6,7 @@ using SquishIt.Framework;
 
 namespace SquishIt.CoffeeScript.Coffee
 {
-    public class CoffeeScriptCompiler
+    public class EmbeddedCoffeeScriptCompiler
     {
         static string _coffeescript;
         static ScriptEngine _engine;

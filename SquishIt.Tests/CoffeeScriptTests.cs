@@ -60,7 +60,7 @@ namespace SquishIt.Tests
         [Test, Platform(Exclude = "Unix, Linux, Mono")]
         public void CompileWithSimpleAlertSucceeds()
         {
-            var compiler = new CoffeeScriptCompiler();
+            var compiler = new EmbeddedCoffeeScriptCompiler();
 
             string result = compiler.Compile("alert 'test' ");
 
@@ -96,14 +96,14 @@ race = (winner, runners...) ->
 # Existence:
 alert 'I knew it!' if elvis?";
 
-            var compiler = new CoffeeScriptCompiler();
+            var compiler = new EmbeddedCoffeeScriptCompiler();
             compiler.Compile(source);
         }
 
         [Test, Platform(Include = "Unix, Linux, Mono")]
         public void CompileFailsGracefullyOnMono()
         {
-            var compiler = new CoffeeScriptCompiler();
+            var compiler = new EmbeddedCoffeeScriptCompiler();
             var exception = Assert.Throws(typeof(NotSupportedException), () => compiler.Compile(""));
             Assert.AreEqual("Coffeescript not yet supported for mono.", exception.Message);
         }

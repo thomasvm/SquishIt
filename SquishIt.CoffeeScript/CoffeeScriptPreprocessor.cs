@@ -17,7 +17,7 @@ namespace SquishIt.CoffeeScript
 
         public string Process(string filePath, string content) 
         {
-            var compiler = new CoffeeScriptCompiler();
+            var compiler = new EmbeddedCoffeeScriptCompiler();
             return compiler.Compile(content);
         }
 

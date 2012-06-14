@@ -43,7 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoffeeScriptPreprocessor.cs" />
-    <Compile Include="Coffee\CoffeescriptCompiler.cs" />
+    <Compile Include="Coffee\NativeCoffeeScriptCompiler.cs" />
+    <Compile Include="Coffee\EmbeddedCoffeeScriptCompiler.cs" />
+    <Compile Include="NativeCoffeeScriptPreprocessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
