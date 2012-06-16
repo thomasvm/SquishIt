@@ -46,7 +46,7 @@ namespace SquishIt.CoffeeScript.Coffee
             process.BeginErrorReadLine();
             process.WaitForExit();
 
-            if(errorBuilder.Length > 0)
+            if(errorBuilder.ToString().Trim().Length > 0)
                 throw new ArgumentException(errorBuilder.ToString());
             
             // use the output
