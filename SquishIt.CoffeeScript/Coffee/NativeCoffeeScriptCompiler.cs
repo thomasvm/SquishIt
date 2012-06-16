@@ -12,38 +12,45 @@ namespace SquishIt.CoffeeScript.Coffee
     {
         public string Compile(string file)
         {
-            StringBuilder outputBuilder;
-            ProcessStartInfo processStartInfo;
-            Process process;
+            StringBuilder outputBuilder = new StringBuilder();
+            StringBuilder errorBuilder = new StringBuilder();
 
-            outputBuilder = new StringBuilder();
+            ProcessStartInfo coffee = new ProcessStartInfo();
+            coffee.CreateNoWindow = true;
+            coffee.RedirectStandardOutput = true;
+            coffee.RedirectStandardInput = true;
+            coffee.RedirectStandardError = true;
+            coffee.UseShellExecute = false;
 
-            processStartInfo = new ProcessStartInfo();
-            processStartInfo.CreateNoWindow = true;
-            processStartInfo.RedirectStandardOutput = true;
-            processStartInfo.RedirectStandardInput = true;
-            processStartInfo.UseShellExecute = false;
-            processStartInfo.Arguments = string.Format("-c {0}", file);
-            processStartInfo.FileName = "coffee";
-
-            process = new Process();
-            process.StartInfo = processStartInfo;
+            if(!FileSystem.Unix)
+            {
+                coffee.Arguments = string.Format("/c coffee -cp {0} ", file);
+                coffee.FileName = "cmd";
+            }
+            else
+            {
+                coffee.Arguments = string.Format("-cp {0}", file);
+                coffee.FileName = "coffee";
+            }
+            
+            Process process = new Process();
+            process.StartInfo = coffee;
             // enable raising events because Process does not raise events by default
             process.EnableRaisingEvents = true;
             // attach the event handler for OutputDataReceived before starting the process
             process.OutputDataReceived += (sender, e) => outputBuilder.Append(e.Data);
-            // start the process
-            // then begin asynchronously reading the output
-            // then wait for the process to exit
-            // then cancel asynchronously reading the output
+            process.ErrorDataReceived += (sender, e) => errorBuilder.AppendLine(e.Data);
+            
             process.Start();
             process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
             process.WaitForExit();
-            process.CancelOutputRead();
 
+            if(errorBuilder.Length > 0)
+                throw new ArgumentException(errorBuilder.ToString());
+            
             // use the output
-            string output = outputBuilder.ToString();
-
+            string output = outputBuilder.ToString().Trim();
             return output;
         }
     }
