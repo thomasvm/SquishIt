@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using NUnit.Framework;
 using SquishIt.CoffeeScript;
 using SquishIt.CoffeeScript.Coffee;
@@ -108,5 +109,30 @@ alert 'I knew it!' if elvis?";
             Assert.AreEqual("Coffeescript not yet supported for mono.", exception.Message);
         }
 
+    }
+
+    [TestFixture]
+    public class NativeCoffeeScriptCompilerTests
+    {
+        [Test]
+        public void CompileWithSimpleAlertSucceeds()
+        {
+            const string coffeeFile = "temp.coffee";
+
+            File.WriteAllText(coffeeFile, "alert 'test' ");
+            string result = null;
+
+            try
+            {
+                var compiler = new NativeCoffeeScriptCompiler();
+                result = compiler.Compile(coffeeFile);
+            }
+            finally 
+            {
+                if(File.Exists(coffeeFile))
+                    File.Delete(coffeeFile);
+            }
+            Assert.AreEqual("(function() {  alert('test');}).call(this);", result);
+        }
     }
 }
