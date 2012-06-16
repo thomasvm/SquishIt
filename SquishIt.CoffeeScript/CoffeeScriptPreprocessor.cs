@@ -6,13 +6,9 @@ namespace SquishIt.CoffeeScript
 {
     public class CoffeeScriptPreprocessor : IPreprocessor
     {
-        const string validExtension = ".coffee";
-        //static Regex coffeeFiles = new Regex(@"(\." + extension + ")$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        public bool ValidFor(string extension) 
+        public bool ValidFor(string extension)
         {
-            var upperExtension = extension.ToUpper();
-            return Extensions.Contains(upperExtension.StartsWith(".") ? upperExtension : ("." + upperExtension));
+            return CoffeeUtils.ValidFor(extension);
         }
 
         public string Process(string filePath, string content) 
@@ -23,7 +19,7 @@ namespace SquishIt.CoffeeScript
 
         public string[] Extensions
         {
-            get { return new [] { validExtension.ToUpper() }; }
+            get { return CoffeeUtils.Extensions; }
         }
     }
 }
